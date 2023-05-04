@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.Constants;
 import utilities.ExcelFunctions;
 import utilities.Helpers;
+import utilities.Reporter;
 
 public class Product {
 
@@ -32,14 +33,16 @@ public class Product {
      */
     public void addToCart(String sizeIndex, String colorIndex, String quantity) {
          try{
-             if (sizeIndex != "") objs.getProductSize(Integer.parseInt(sizeIndex)).click();
-             if (colorIndex != "") objs.getProductColor(Integer.parseInt(colorIndex)).click();
+             if (!sizeIndex.isEmpty()) objs.getProductSize(Integer.parseInt(sizeIndex)).click();
+             if (!colorIndex.isEmpty()) objs.getProductColor(Integer.parseInt(colorIndex)).click();
 
              objs.getQuantityField().clear();
              objs.getQuantityField().sendKeys(String.valueOf(quantity));
              objs.getAddToCartButton().click();
+
          } catch (Exception e){
              System.out.println("Error: "+e.getMessage());
+
          }
     }
 
@@ -81,12 +84,12 @@ public class Product {
             wait.until(ExpectedConditions.visibilityOf(objs.getErrorMessage()));
 
             if (objs.getFieldErrors().size() > 2){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -96,12 +99,12 @@ public class Product {
             wait.until(ExpectedConditions.invisibilityOfAllElements(objs.getFieldErrors()));
 
             if (objs.getFieldErrors().size() == 1){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -111,12 +114,12 @@ public class Product {
             wait.until(ExpectedConditions.invisibilityOfAllElements(objs.getFieldErrors()));
 
             if (objs.getFieldErrors().size() == 1){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -127,12 +130,12 @@ public class Product {
             String successMessage = objs.getSuccessMessage().getText();
             System.out.println("Success message: "+successMessage);
             if (successMessage.contains("You added")){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 

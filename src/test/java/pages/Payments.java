@@ -2,10 +2,7 @@ package pages;
 
 import drivers.CurrentDriver;
 import objects.PaymentsObjects;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.Constants;
 import utilities.Helpers;
 

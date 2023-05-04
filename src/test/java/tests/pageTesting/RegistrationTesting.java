@@ -8,6 +8,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 import pages.Registration;
 import utilities.Constants;
 import utilities.ExcelFunctions;
+import utilities.Reporter;
 
 public class RegistrationTesting {
     static ExtentTest test;
@@ -45,7 +46,6 @@ public class RegistrationTesting {
 
     @AfterClass
     public static void endTest() {
-        report.endTest(test);
-        report.flush();
+        Reporter.endTest();
     }
 }

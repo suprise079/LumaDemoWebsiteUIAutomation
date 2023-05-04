@@ -42,8 +42,6 @@ public class ShippingTesting {
         checkOut.proceedCheckOutButton();
         checkOut.fillShippingForm(false);
         checkOut.clickContinue();
-
-
     }
 
     @AfterClass

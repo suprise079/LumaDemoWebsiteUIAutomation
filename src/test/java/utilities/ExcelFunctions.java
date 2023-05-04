@@ -1,5 +1,6 @@
 package utilities;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -113,6 +114,7 @@ public class ExcelFunctions {
 
         //get the sheet
         XSSFSheet sheet = getExcelSheet();
+        DataFormatter format = new DataFormatter();
 
         //get the range of rows and columns to read
         int[] rowsRange = getRowsRange(startText, EndText);
@@ -132,13 +134,15 @@ public class ExcelFunctions {
         int columnCounter = 0;
         //loop  through the rows
         for (int i = startRow; i <= endRow; i++) {
+            //Add test scenario to the first column
+            data[rowCounter][columnCounter++] = format.formatCellValue(sheet.getRow(i).getCell(1));
             //loop through the columns
             for (int j = startColumn; j <= endColumn; j++) {
-                data[rowCounter][columnCounter] = sheet.getRow(i).getCell(j).getStringCellValue();
+                data[rowCounter][columnCounter] = format.formatCellValue(sheet.getRow(i).getCell(j));
                 columnCounter++;
             }
-            //Add test scenario to the first column
-            data[rowCounter][columnCounter] = sheet.getRow(i).getCell(1).getStringCellValue();
+
+
             columnCounter = 0;
             rowCounter++;
         }

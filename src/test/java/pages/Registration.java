@@ -4,13 +4,11 @@ import com.relevantcodes.extentreports.LogStatus;
 import drivers.CurrentDriver;
 import objects.RegistrationObjects;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import tests.pageTesting.TestingMain;
+import tests.pageTesting.Main;
 import utilities.Constants;
 import utilities.ExcelFunctions;
 import utilities.Helpers;
-
-import java.util.List;
+import utilities.Reporter;
 
 public class Registration {
 
@@ -103,6 +101,16 @@ public class Registration {
         regObj.getSubmitButton().click();
     }
 
+    public void registerDefaultUser(){
+       this.withEmail(Constants.DEFAULT_EMAIL)
+                .withFirstName(Constants.DEFAULT_FIRST_NAME)
+                .withLastName(Constants.DEFAULT_LAST_NAME)
+                .withPassword(Constants.DEFAULT_PASSWORD);
+        this.openRegistrationPage();
+        this.fillForm();
+        this.submitForm();
+    }
+
     public void callTest(String caseName){
         if (caseName.contains("without required fields")) this.testEmptyFields(caseName);
         if (caseName.contains("without first name")) this.testNoFirstName(caseName);
@@ -127,12 +135,12 @@ public class Registration {
     }
 
     private void passed(String caseName){
-        TestingMain.test().log(LogStatus.PASS, caseName + " - Test passed");
+        Main.test().log(LogStatus.PASS, caseName + " - Test passed");
     }
     
     private void failed(String caseName){
-        String output = caseName + " - Test failed"+ TestingMain.test().addScreenCapture(Helpers.capture(driver));
-        TestingMain.test().log(LogStatus.FAIL, output);
+        String output = caseName + " - Test failed"+ Main.test().addScreenCapture(Reporter.capture(driver));
+        Main.test().log(LogStatus.FAIL, output);
     }
 
     private void testNoFirstName(String caseName) {
@@ -148,8 +156,7 @@ public class Registration {
     private void testNoLastName(String caseName) {
         try {
             regObj.getLastNameError().isDisplayed();
-            this.passed(caseName);;
-
+            this.passed(caseName);
         } catch (Exception e) {
             this.failed(caseName);
         }

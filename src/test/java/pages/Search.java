@@ -4,15 +4,13 @@ import drivers.CurrentDriver;
 import objects.SearchObjects;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.Constants;
 import utilities.ExcelFunctions;
 import utilities.Helpers;
-
-import java.util.List;
+import utilities.Reporter;
 
 public class Search {
     WebDriver driver;
@@ -44,7 +42,7 @@ public class Search {
                 callTest(words[i][count]);
                 Thread.sleep(1000);
             } catch (Exception e){
-                Helpers.failed(words[i][2], driver);
+                Reporter.failed(words[i][2], driver);
             }
         }
     }
@@ -60,9 +58,9 @@ public class Search {
     //test cases
     public void testValidLength(String caseName){
         if (this.getSearchResults() > 0){
-            Helpers.passed(caseName);
+            Reporter.passed(caseName);
         } else {
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -72,12 +70,12 @@ public class Search {
             wait.until(ExpectedConditions.visibilityOf(objs.getMessageNotice()));
             String message = this.getMessageNotice();
             if (message.contains("Minimum Search query length is 3")){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -87,12 +85,12 @@ public class Search {
             wait.until(ExpectedConditions.visibilityOf(objs.getMessageNotice()));
             String message = this.getMessageNotice();
             if (message.contains("Your search returned no results.")){
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e){
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 

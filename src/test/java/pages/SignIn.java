@@ -6,10 +6,11 @@ import objects.SignInObjects;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import tests.pageTesting.TestingMain;
+import tests.pageTesting.Main;
 import utilities.Constants;
 import utilities.ExcelFunctions;
 import utilities.Helpers;
+import utilities.Reporter;
 
 public class SignIn {
 
@@ -49,13 +50,13 @@ public class SignIn {
         int attempt = 0;
         for (int i = 0; i <= data.length-1; i++) {
             int count = 3;
+            String caseName = data[i][count];
             try {
                 String email = data[i][count++];
                 String password = data[i][count++];
-                System.out.println("Email: " + email + " Password: " + password);
                 objs.getEmailField().sendKeys(email);
                 objs.getPasswordField().sendKeys(password);
-                String caseName = data[i][count];
+
 
                 this.submitForm();
 
@@ -68,7 +69,7 @@ public class SignIn {
                 attempt++;
 
             } catch (Exception e) {
-                Helpers.failed(data[i][5], driver);
+                Reporter.failed(caseName, driver);
             }
 
         }
@@ -91,12 +92,12 @@ public class SignIn {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.visibilityOf(objs.getErrorNotification()));
             if (!objs.getErrorNotification().getText().contains("The account sign-in was incorrect")) {
-                Helpers.passed(caseName);
+                Reporter.passed(caseName);
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e) {
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -105,14 +106,14 @@ public class SignIn {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.visibilityOf(objs.getCaptureContainer()));
             if (objs.getCaptureContainer().isDisplayed()) {
-                String output = TestingMain.test().addScreenCapture(Helpers.capture(driver)) + "\n" + caseName;
-                Helpers.passed(output);
+                String output = Main.test().addScreenCapture(Reporter.capture(driver)) + "\n" + caseName;
+                Reporter.passed(output);
 
             } else {
-                Helpers.failed(caseName, driver);
+                Reporter.failed(caseName, driver);
             }
         } catch (Exception e) {
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 
@@ -120,9 +121,9 @@ public class SignIn {
         HomeObjects home = new HomeObjects();
 
         if (home.getTitle().contains("Home Page - Magento eCommerce")) {
-            Helpers.passed(caseName);
+            Reporter.passed(caseName);
         } else {
-            Helpers.failed(caseName, driver);
+            Reporter.failed(caseName, driver);
         }
     }
 

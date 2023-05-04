@@ -1,18 +1,15 @@
 package utilities;
 
 import com.google.common.io.Files;
-import com.relevantcodes.extentreports.LogStatus;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-import tests.pageTesting.TestingMain;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 public class Helpers {
-
-
-
 
     public static void select(WebElement element, String option) {
         Select select = new Select(element);
@@ -30,18 +27,7 @@ public class Helpers {
     }
 
     //Take screenshot of the current browser page
-    public static String capture(WebDriver driver) {
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        File Dest = new File("src\\test\\java\\reports\\images" + System.currentTimeMillis() + ".png");
-        String errflpath = Dest.getAbsolutePath();
-        try {
-            Files.copy(scrFile, Dest);
-        } catch (IOException e) {
-            System.out.println("Screenshot was not captured");
-//            RegistrationTesting.test().log(LogStatus.FAIL, "Screenshot was not captured");
-        }
-        return errflpath;
-    }
+
 
     public static void scrollDown(WebDriver driver, int value){
 
@@ -50,13 +36,17 @@ public class Helpers {
         js.executeScript(script);
     }
 
-    public static void passed(String caseName){
-        TestingMain.test().log(LogStatus.PASS, caseName + " - Test passed");
-    }
 
-    public static void failed(String caseName, WebDriver driver){
-        String output = caseName + " - Test failed"+ TestingMain.test().addScreenCapture(Helpers.capture(driver));
-        TestingMain.test().log(LogStatus.FAIL, output);
+
+    public static String getProperty(String key){
+        try{
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(Constants.PROPERTIES_PATH));
+            return properties.getProperty(key);
+        } catch (Exception e){
+            System.err.println("Error reading properties file"+e.getMessage());
+            return null;
+        }
     }
 
 }
